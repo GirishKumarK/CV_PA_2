@@ -43,12 +43,13 @@ class ConvNet(object):
         #
         # ----------------- YOUR CODE HERE ----------------------
         #
-        conv1 = tf.layers.conv2d(inputs=X, filters=40, kernel_size=[5, 5], padding="same", activation=tf.nn.sigmoid)
+        pool_flat = tf.reshape(X, [-1, 28, 28, 1])
+        conv1 = tf.layers.conv2d(inputs=pool_flat, filters=40, kernel_size=[5, 5], padding="same", activation=tf.nn.sigmoid)
         pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[2, 2], strides=1)
         conv2 = tf.layers.conv2d(inputs=pool1, filters=40, kernel_size=[5, 5], padding="same", activation=tf.nn.sigmoid)
         pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[2, 2], strides=1)
-        # pool2_flat = tf.reshape(pool2, [10, 7 * 7 * 64])
-        dense = tf.layers.dense(inputs=pool2, units=hidden_size, activation=tf.nn.sigmoid)
+        pool2_flat = tf.reshape(pool2, [-1, 26 * 26 * 40])
+        dense = tf.layers.dense(inputs=pool2_flat, units=hidden_size, activation=tf.nn.sigmoid)
         fcl = dense
         #
         # Uncomment the following return stmt once method implementation is done.
@@ -63,12 +64,13 @@ class ConvNet(object):
         #
         # ----------------- YOUR CODE HERE ----------------------
         #
-        conv1 = tf.layers.conv2d(inputs=X, filters=40, kernel_size=[5, 5], padding="same", activation=tf.nn.relu)
+        pool_flat = tf.reshape(X, [-1, 28, 28, 1])
+        conv1 = tf.layers.conv2d(inputs=pool_flat, filters=40, kernel_size=[5, 5], padding="same", activation=tf.nn.relu)
         pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[2, 2], strides=1)
         conv2 = tf.layers.conv2d(inputs=pool1, filters=40, kernel_size=[5, 5], padding="same", activation=tf.nn.relu)
         pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[2, 2], strides=1)
-        # pool2_flat = tf.reshape(pool2, [10, 7 * 7 * 64])
-        dense = tf.layers.dense(inputs=pool2, units=hidden_size, activation=tf.nn.relu)
+        pool2_flat = tf.reshape(pool2, [-1, 26 * 26 * 40])
+        dense = tf.layers.dense(inputs=pool2_flat, units=hidden_size, activation=tf.nn.relu)
         fcl = dense
         #
         # Uncomment the following return stmt once method implementation is done.
@@ -84,14 +86,17 @@ class ConvNet(object):
         # ----------------- YOUR CODE HERE ----------------------
         #
         regularizer = tf.contrib.layers.l2_regularizer(scale=decay)
-        conv1 = tf.layers.conv2d(inputs=X, filters=40, kernel_size=[5, 5], padding="same", activation=tf.nn.relu)
+        pool_flat = tf.reshape(X, [-1, 28, 28, 1])
+        conv1 = tf.layers.conv2d(inputs=pool_flat, filters=40, kernel_size=[5, 5], padding="same", activation=tf.nn.relu)
         pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[2, 2], strides=1)
         conv2 = tf.layers.conv2d(inputs=pool1, filters=40, kernel_size=[5, 5], padding="same", activation=tf.nn.relu)
         pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[2, 2], strides=1)
-        # pool2_flat = tf.reshape(pool2, [10, 7 * 7 * 64])
-        dense1 = tf.layers.dense(inputs=pool2, units=hidden_size, activation=tf.nn.relu, kernel_regularizer=regularizer)
-        # pool2_flat = tf.reshape(pool2, [10, 7 * 7 * 64])
-        dense2 = tf.layers.dense(inputs=dense1, units=hidden_size, activation=tf.nn.relu, kernel_regularizer=regularizer)
+        pool2_flat = tf.reshape(pool2, [-1, 26 * 26 * 40])
+        print (pool2_flat.shape)
+        dense1 = tf.layers.dense(inputs=pool2_flat, units=hidden_size, activation=tf.nn.relu, kernel_regularizer=regularizer)
+        print (dense1.shape)
+        dense1_flat = tf.reshape(dense1, [-1, hidden_size * 1])
+        dense2 = tf.layers.dense(inputs=dense1_flat, units=hidden_size, activation=tf.nn.relu, kernel_regularizer=regularizer)
         fcl = dense2
         #
         # Uncomment the following return stmt once method implementation is done.
@@ -107,14 +112,15 @@ class ConvNet(object):
         #
         # ----------------- YOUR CODE HERE ----------------------
         #
-        conv1 = tf.layers.conv2d(inputs=X, filters=40, kernel_size=[5, 5], padding="same", activation=tf.nn.relu)
+        pool_flat = tf.reshape(X, [-1, 28, 28, 1])
+        conv1 = tf.layers.conv2d(inputs=pool_flat, filters=40, kernel_size=[5, 5], padding="same", activation=tf.nn.relu)
         pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[2, 2], strides=1)
         conv2 = tf.layers.conv2d(inputs=pool1, filters=40, kernel_size=[5, 5], padding="same", activation=tf.nn.relu)
         pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[2, 2], strides=1)
-        # pool2_flat = tf.reshape(pool2, [10, 7 * 7 * 64])
-        dense1 = tf.layers.dense(inputs=pool2, units=hidden_size, activation=tf.nn.relu)
-        # pool2_flat = tf.reshape(pool2, [10, 7 * 7 * 64])
-        dense2 = tf.layers.dense(inputs=dense1, units=hidden_size, activation=tf.nn.relu)
+        pool2_flat = tf.reshape(pool2, [-1, 26 * 26 * 40])
+        dense1 = tf.layers.dense(inputs=pool2_flat, units=hidden_size, activation=tf.nn.relu)
+        dense1_flat = tf.reshape(dense1, [-1, hidden_size * 1])
+        dense2 = tf.layers.dense(inputs=dense1_flat, units=hidden_size, activation=tf.nn.relu)
         dropout = tf.layers.dropout(inputs=dense2, rate=0.5, training=is_train)
         fcl = dropout
         #
@@ -245,10 +251,16 @@ class ConvNet(object):
 
                     #total_correct = sess.run(accuracy, feed_dict={X: testX, Y: testY, is_train: False})
                     #print ('accuracy of the trained model %f' % (total_correct / testX.shape[0]))
-                    total_correct = sess.run(accuracy, feed_dict={X: batch_x, Y: batch_y, is_train: False})
+                    batch = int(trainY.shape[0]/100)
+                    accuracies = []
+                    for j in range(batch):
+                        batch_accuracy = sess.run(accuracy, feed_dict={X: trainX[batch*j:batch*(j+1)], Y: trainY[batch*j:batch*(j+1)], is_train: False})
+                        print (batch_accuracy)
+                        accuracies.append(batch_accuracy)
+                    total_correct = sum(accuracies) / len(accuracies)
+                    # total_correct = sess.run(accuracy, feed_dict={X: trainX, Y: trainY, is_train: False})
                     print ('accuracy of the trained model %f' % (total_correct))
                     print ()
 
                 #return sess.run(accuracy, feed_dict={X: testX, Y: testY, is_train: False}) / testX.shape[0]
                 return sess.run(accuracy, feed_dict={X: testX, Y: testY, is_train: False})
-
