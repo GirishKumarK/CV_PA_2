@@ -2,11 +2,11 @@
 clear all;
 % load MCube_frames
 
-% fr1 = 'basketball1.png'
-% fr2 = 'basketball2.png'
+fr1 = 'basketball1.png'
+fr2 = 'basketball2.png'
 
-fr1 = 'grove1.png'
-fr2 = 'grove2.png'
+% fr1 = 'grove1.png'
+% fr2 = 'grove2.png'
 
 figure();
 subplot 211

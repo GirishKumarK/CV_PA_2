@@ -2,8 +2,8 @@
 clear all;
 % load traffic_frames
 
-fr1 = 'traf1.png'
-fr2 = 'traf2.png'
+fr1 = 'traffic1.png'
+fr2 = 'traffic2.png'
 
 % fr1 = 'basketball1.png'
 % fr2 = 'basketball2.png'

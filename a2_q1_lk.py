@@ -137,23 +137,13 @@ def looped_pyr_down(params):
     return None
 
 
-file1, file2, image1, image2, pixels1, pixels2 = load_images(['traffic1.png', 'traffic2.png'])
-file2, image2, cornersX, cornersY, window_size = find_corners([file2, image2, 20, 1, pixels2, 0.01, 10])
-plot_corners([file2, image2, cornersX, cornersY])
-u, v = lucas_kanade([image1, window_size, cornersX, cornersY])
-draw_optfl_vecs([file2, image2, cornersX, cornersY, u, v])
-#unit_pyr_down([image1, file2, image2, window_size, 2, pixels2, 0.01, 10, 1.0])
-for loop in range(1, 10):
-    scale = loop**2
-    looped_pyr_down([image1, file2, image2, window_size, scale, int(pixels2/2), 0.01, 10, 1.5, loop])
-
 file1, file2, image1, image2, pixels1, pixels2 = load_images(['basketball1.png', 'basketball2.png'])
 file2, image2, cornersX, cornersY, window_size = find_corners([file2, image2, 20, 1, pixels2, 0.01, 10])
 plot_corners([file2, image2, cornersX, cornersY])
 u, v = lucas_kanade([image1, window_size, cornersX, cornersY])
 draw_optfl_vecs([file2, image2, cornersX, cornersY, u, v])
 #unit_pyr_down([image1, file2, image2, window_size, 2, pixels2, 0.01, 10, 1.0])
-for loop in range(1, 10):
+for loop in range(1, 4):
     scale = loop**2
     looped_pyr_down([image1, file2, image2, window_size, scale, int(pixels2/2), 0.01, 10, 1.5, loop])
 
@@ -163,7 +153,7 @@ plot_corners([file2, image2, cornersX, cornersY])
 u, v = lucas_kanade([image1, window_size, cornersX, cornersY])
 draw_optfl_vecs([file2, image2, cornersX, cornersY, u, v])
 #unit_pyr_down([image1, file2, image2, window_size, 2, pixels2, 0.01, 10, 1.0])
-for loop in range(1, 10):
+for loop in range(1, 4):
     scale = loop**2
     looped_pyr_down([image1, file2, image2, window_size, scale, int(pixels2/2), 0.01, 10, 1.5, loop])
 
