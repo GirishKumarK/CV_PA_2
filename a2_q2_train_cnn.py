@@ -109,6 +109,7 @@ class ConvNet(object):
         #
         # ----------------- YOUR CODE HERE ----------------------
         #
+        #regularizer = tf.contrib.layers.l2_regularizer(scale=0.1)
         pool_flat = tf.reshape(X, [-1, 28, 28, 1])
         conv1 = tf.layers.conv2d(inputs=pool_flat, filters=20, kernel_size=[5, 5], padding="same", activation=tf.nn.relu)
         pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[2, 2], strides=2)
@@ -116,10 +117,9 @@ class ConvNet(object):
         pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[2, 2], strides=2)
         pool2_flat = tf.reshape(pool2, [-1, int(pool2.shape[1]) * int(pool2.shape[2]) * int(pool2.shape[3])])
         dense1 = tf.layers.dense(inputs=pool2_flat, units=hidden_size, activation=tf.nn.relu)
-        dropout1 = tf.layers.dropout(inputs=dense1, rate=0.25, training=is_train)
-        dense2 = tf.layers.dense(inputs=dropout1, units=hidden_size, activation=tf.nn.relu)
-        dropout2 = tf.layers.dropout(inputs=dense2, rate=0.25, training=is_train)
-        fcl = dropout2
+        dense2 = tf.layers.dense(inputs=dense1, units=hidden_size, activation=tf.nn.relu)
+        dropout = tf.layers.dropout(inputs=dense2, rate=0.5, training=is_train)
+        fcl = dropout
         #
         # Uncomment the following return stmt once method implementation is done.
         return  fcl
