@@ -1,7 +1,5 @@
 # Computer Vision ~ Programming Assignment ~ 2
 
-# STOP HERE ~ READ ME FIRST ~ INCOMPLETE
+Originally done using Python 3.x
 
-# Use Python 3.5 only !
-
-Changes will be done overtime and files will be added soon.
+Requirements : Python 3.x, OpenCV3 (conda-forge), NumPy, SciPy, MatPlotLib, Tensorflow-GPU (Python 3.5 only).
